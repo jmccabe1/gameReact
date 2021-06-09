@@ -10,22 +10,22 @@ import config from './config';
 Amplify.configure({
   Auth: {
     mandatorySignIn: true,
-    region: config.cognito.us-east-1,
-    userPoolId: config.cognito.us-east-1_Cu7Ka7RkR,
-    identityPoolId: config.cognito.us-east-1:5b98629f-8e82-4933-a0d8-a0c71b6e5474,
-    userPoolWebClientId: config.cognito.3p86l092630rf71gthqebvdk9n
+    region: config.cognito.REGION,
+    userPoolId: config.cognito.USER_POOL_ID,
+    identityPoolId: config.cognito.IDENTITY_POOL_ID,
+    userPoolWebClientId: config.cognito.APP_CLIENT_ID
   },
   Storage: {
     region: config.s3.REGION,
     bucket: config.s3.BUCKET,
-    identityPoolId: config.cognito.us-east-1:5b98629f-8e82-4933-a0d8-a0c71b6e5474
+    identityPoolId: config.cognito.IDENTITY_POOL_ID
   },
   API: {
     endpoints: [
       {
         name: "notes",
         endpoint: config.apiGateway.URL,
-        region: config.apiGateway.us-east-1
+        region: config.apiGateway.REGION
       },
     ]
   }
