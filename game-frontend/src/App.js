@@ -40,6 +40,21 @@ function App() {
       userHasAuthenticated(false);
       history.push("/login");
     }
+    function makeGame() {
+    try {
+    const request = async () => {
+        const response = await fetch('http://localhost:8080/api/v1/game/', {method: 'POST'});
+        const json = await response.json();
+        console.log(json);
+    }
+
+    request();
+	}
+		catch(e) {
+			onError(e);
+		}
+
+    }
 return (
   !isAuthenticating && (
     <div className="App container py-3">
@@ -53,7 +68,10 @@ return (
         <Navbar.Collapse className="justify-content-end">
           <Nav activeKey={window.location.pathname}>
             {isAuthenticated ? (
+            	<>
               <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+              <Nav.Link onClick={makeGame}>Create Game</Nav.Link>
+              </>
             ) : (
               <>
                 <LinkContainer to="/signup">
