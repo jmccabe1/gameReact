@@ -13,6 +13,7 @@ function App() {
 	const history = useHistory();
     const [isAuthenticated, userHasAuthenticated] = useState(false);
     const [isAuthenticating, setIsAuthenticating] = useState(true);
+    const [userEmail, setUserEmail] = useState();
     useEffect(() => {
       onLoad();
     }, []);
@@ -42,14 +43,42 @@ function App() {
     }
     function makeGame() {
     try {
+    const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ playerID: userEmail })
+        };
+        const request = async () => {
+        const response = await fetch('http://localhost:8080/api/v1/game/', requestOptions)
+        //.then(response => response.json())
+          //  .then(data => this.setState({ postId: data.id }));
+            };
+            request();
+    /*const request = async () => {
+    			alert("ping0");
+            const response = await fetch('http://localhost:8080/api/v1/game/', {method: 'POST'});
+            const json = await response.json();
+            console.log(json);
+            alert("ping1");
+        }
+
+        request();
+        alert("ping2");
     const request = async () => {
-        const response = await fetch('http://localhost:8080/api/v1/game/', {method: 'POST'});
+        const response = await fetch('http://localhost:8080/api/v1/game/', {
+        method: 'POST',
+        headers: {
+        	Accept: 'application/json',
+        	'Content-Type': 'application/json'
+        }
+
+        });
         const json = await response.json();
         console.log(json);
     }
 
-    request();
-	}
+    request();*/
+    }
 		catch(e) {
 			onError(e);
 		}
@@ -85,7 +114,7 @@ return (
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
+      <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated, userEmail, setUserEmail }}>
         <Routes />
       </AppContext.Provider>
     </div>
