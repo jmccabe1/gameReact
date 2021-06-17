@@ -50,34 +50,8 @@ function App() {
         };
         const request = async () => {
         const response = await fetch('http://localhost:8080/api/v1/game/', requestOptions)
-        //.then(response => response.json())
-          //  .then(data => this.setState({ postId: data.id }));
             };
             request();
-    /*const request = async () => {
-    			alert("ping0");
-            const response = await fetch('http://localhost:8080/api/v1/game/', {method: 'POST'});
-            const json = await response.json();
-            console.log(json);
-            alert("ping1");
-        }
-
-        request();
-        alert("ping2");
-    const request = async () => {
-        const response = await fetch('http://localhost:8080/api/v1/game/', {
-        method: 'POST',
-        headers: {
-        	Accept: 'application/json',
-        	'Content-Type': 'application/json'
-        }
-
-        });
-        const json = await response.json();
-        console.log(json);
-    }
-
-    request();*/
     }
 		catch(e) {
 			onError(e);
