@@ -8,12 +8,14 @@ import { AppContext } from "./libs/contextLib";
 import { Auth } from "aws-amplify";
 import {useHistory} from "react-router-dom";
 import { onError } from "./libs/errorLib";
+import { useAppContext } from "./libs/contextLib";
 
 function App() {
 	const history = useHistory();
     const [isAuthenticated, userHasAuthenticated] = useState(false);
     const [isAuthenticating, setIsAuthenticating] = useState(true);
     const [userEmail, setUserEmail] = useState();
+    const [gameID, setGameID] = useState(null);
     useEffect(() => {
       onLoad();
     }, []);
@@ -39,10 +41,16 @@ function App() {
     }
     function handleLogout() {
       userHasAuthenticated(false);
+      setGameID(null);
       history.push("/login");
     }
     function makeGame() {
     try {
+    if (userEmail == null) {
+    	userHasAuthenticated(false);
+    	history.push("/login");
+    }
+    else{
     const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -50,8 +58,16 @@ function App() {
         };
         const request = async () => {
         const response = await fetch('http://localhost:8080/api/v1/game/', requestOptions)
+        .then((response) => response.json())
+        .then((responseData) => {
+							console.log(responseData);
+                    setGameID(responseData.gameID);
+                    return responseData;
+             })
+             .catch(error => console.warn(error));
             };
             request();
+    }
     }
 		catch(e) {
 			onError(e);
@@ -63,9 +79,16 @@ return (
     <div className="App container py-3">
       <Navbar collapseOnSelect bg="light" expand="md" className="mb-3">
         <LinkContainer to="/">
+			{gameID && isAuthenticated ? (
+				<div className="font-weight-bold text-muted">
+				{gameID}
+				</div>
+			) : (
           <Navbar.Brand className="font-weight-bold text-muted">
-            Scratch
+            Welcome
           </Navbar.Brand>
+          )
+			}
         </LinkContainer>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
