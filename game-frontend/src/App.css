@@ -1,3 +1,11 @@
 .App{
 
 }
+
+.copyButton{
+		color: #6c757d!important;
+		font-weight: 700!important;
+		text-decoration: none;
+		background-color: transparent;
+		font-size: 10px;
+	}

@@ -80,9 +80,14 @@ return (
       <Navbar collapseOnSelect bg="light" expand="md" className="mb-3">
         <LinkContainer to="/">
 			{gameID && isAuthenticated ? (
+			<>
 				<div className="font-weight-bold text-muted">
 				{gameID}
 				</div>
+				<Nav.Link className="copyButton" onClick={() => {navigator.clipboard.writeText(gameID)}}>
+          	 	Copy ID
+  				</Nav.Link>
+				</>
 			) : (
           <Navbar.Brand className="font-weight-bold text-muted">
             Welcome
