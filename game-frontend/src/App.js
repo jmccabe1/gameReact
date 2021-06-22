@@ -6,9 +6,10 @@ import Nav from "react-bootstrap/Nav";
 import { LinkContainer } from "react-router-bootstrap";
 import { AppContext } from "./libs/contextLib";
 import { Auth } from "aws-amplify";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { onError } from "./libs/errorLib";
 import { useAppContext } from "./libs/contextLib";
+import { useFormFields } from "./libs/hooksLib";
 
 function App() {
 	const history = useHistory();
@@ -34,16 +35,19 @@ function App() {
 
       setIsAuthenticating(false);
     }
+
     async function handleLogout() {
       await Auth.signOut();
 
       userHasAuthenticated(false);
     }
+
     function handleLogout() {
       userHasAuthenticated(false);
       setGameID(null);
       history.push("/login");
     }
+
     function makeGame() {
     try {
     if (userEmail == null) {
@@ -57,16 +61,19 @@ function App() {
             body: JSON.stringify({ playerID: userEmail })
         };
         const request = async () => {
-        const response = await fetch('http://localhost:8080/api/v1/game/', requestOptions)
-        .then((response) => response.json())
-        .then((responseData) => {
-							console.log(responseData);
+        		const response = await fetch('http://localhost:8080/api/v1/game/', requestOptions)
+       	  	 .then((response) => response.json())
+      		  .then((responseData) => {
                     setGameID(responseData.gameID);
+							history.push({
+								pathname: "/play",
+								state: { detail: responseData.gameID }
+							})
                     return responseData;
-             })
-             .catch(error => console.warn(error));
-            };
-            request();
+           	  })
+            .catch(error => console.warn(error));
+         };
+         request();
     }
     }
 		catch(e) {
@@ -102,6 +109,9 @@ return (
             	<>
               <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
               <Nav.Link onClick={makeGame}>Create Game</Nav.Link>
+              <LinkContainer to="/join">
+              	<Nav.Link>Join Game</Nav.Link>
+              	</LinkContainer>
               </>
             ) : (
               <>
