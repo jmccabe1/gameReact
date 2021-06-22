@@ -6,20 +6,22 @@ import { onError } from "../libs/errorLib";
 import { useFormFields } from "../libs/hooksLib";
 import { useAppContext } from "../libs/contextLib";
 import { useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function JoinGame() {
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [gameStatus, setGameStatus] = useState(null);
+	const location = useLocation();
 	const [fields, handleFieldChange] = useFormFields({
          gameID: ""
        });
-   const { setReceivedGameID } = useAppContext();
+   const { setUserEmail } = useAppContext();
    const history = useHistory();
 
    async function handleSubmit(event) {
        event.preventDefault();
-
+		setUserEmail(location.state.detail);
        setIsLoading(true);
 
        try {
@@ -27,16 +29,27 @@ export default function JoinGame() {
          	method: 'GET',
          	headers: { 'Content-Type': 'application/json' }
          };
+         const requestOptions2 = {
+         	method: 'PUT',
+            body: location.state.detail
+         };
          const request = async () => {
          	const response = await fetch('http://localhost:8080/api/v1/game/' + fields.gameID + '/status', requestOptions)
 					.then((response) => response.text())
          		.then((responseData) => {
          			if (responseData == 'ONLINE') {
-         				setReceivedGameID(fields.gameID);
-                     history.push({
-                     	pathname: "/play",
-                       	state: { detail: fields.gameID }
-                     })
+							const request = async () => {
+                     	const response = await fetch('http://localhost:8080/api/v1/game/' + fields.gameID + '/join', requestOptions2)
+                        	.then((response) => response.json())
+                        	.then((responseData) => {
+                           	history.push({
+                           		pathname: "/play",
+                              	state: { detail: fields.gameID }
+                           	})
+                           	return responseData;
+                        	})
+                           .catch(error => console.warn(error));
+         				}
          			} else {
          				alert("This game does not exist");
          				setIsLoading(false);
@@ -53,8 +66,12 @@ export default function JoinGame() {
 
  	}
 
+
+
+
 	return(
 		<div className="Login">
+			Joining as: {location.state.detail}
          <Form onSubmit={handleSubmit}>
            <Form.Group size="lg" controlId="gameID">
              <Form.Label>Game ID</Form.Label>

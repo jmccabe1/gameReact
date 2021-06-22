@@ -17,7 +17,6 @@ function App() {
     const [isAuthenticating, setIsAuthenticating] = useState(true);
     const [userEmail, setUserEmail] = useState();
     const [gameID, setGameID] = useState(null);
-    const [receivedGameID, setReceivedGameID] = useState();
     useEffect(() => {
       onLoad();
     }, []);
@@ -27,9 +26,6 @@ function App() {
       try {
         await Auth.currentSession();
         userHasAuthenticated(true);
-        if (gameID == null && receivedGameID != null) {
-        	setGameID(receivedGameID);
-        }
       }
       catch(e) {
         if (e !== 'No current user') {
@@ -92,9 +88,13 @@ function App() {
           	history.push("/login");
        }
        else {
-       	history.push("/join");
+       	history.push({
+       		pathname: "/join",
+       		state: { detail: userEmail }
+       		});
+       	}
        }
-    }
+
 return (
   !isAuthenticating && (
     <div className="App container py-3">
@@ -138,7 +138,7 @@ return (
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated, userEmail, setUserEmail, receivedGameID, setReceivedGameID }}>
+      <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated, userEmail, setUserEmail }}>
         <Routes />
       </AppContext.Provider>
     </div>
