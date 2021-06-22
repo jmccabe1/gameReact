@@ -85,6 +85,16 @@ function App() {
 		}
 
     }
+
+    function goToJoin() {
+    	if (userEmail == null) {
+          	userHasAuthenticated(false);
+          	history.push("/login");
+       }
+       else {
+       	history.push("/join");
+       }
+    }
 return (
   !isAuthenticating && (
     <div className="App container py-3">
@@ -113,9 +123,7 @@ return (
             	<>
               <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
               <Nav.Link onClick={makeGame}>Create Game</Nav.Link>
-              <LinkContainer to="/join">
-              	<Nav.Link>Join Game</Nav.Link>
-              	</LinkContainer>
+              <Nav.Link onClick={goToJoin}>Join Game</Nav.Link>
               </>
             ) : (
               <>
