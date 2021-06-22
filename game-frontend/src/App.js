@@ -17,6 +17,7 @@ function App() {
     const [isAuthenticating, setIsAuthenticating] = useState(true);
     const [userEmail, setUserEmail] = useState();
     const [gameID, setGameID] = useState(null);
+    const [receivedGameID, setReceivedGameID] = useState();
     useEffect(() => {
       onLoad();
     }, []);
@@ -26,6 +27,9 @@ function App() {
       try {
         await Auth.currentSession();
         userHasAuthenticated(true);
+        if (gameID == null && receivedGameID != null) {
+        	setGameID(receivedGameID);
+        }
       }
       catch(e) {
         if (e !== 'No current user') {
@@ -126,7 +130,7 @@ return (
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated, userEmail, setUserEmail }}>
+      <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated, userEmail, setUserEmail, receivedGameID, setReceivedGameID }}>
         <Routes />
       </AppContext.Provider>
     </div>
