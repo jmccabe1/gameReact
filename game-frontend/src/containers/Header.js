@@ -17,6 +17,7 @@ function Header() {
     const [isAuthenticating, setIsAuthenticating] = useState(true);
     const [userEmail, setUserEmail] = useState();
     const [gameID, setGameID] = useState(null);
+    const [importedGameID, setImportedGameID] = useState();
     useEffect(() => {
       onLoad();
     }, []);
@@ -100,14 +101,25 @@ return (
     <div className="App container py-3">
       <Navbar collapseOnSelect bg="light" expand="md" className="mb-3">
         <LinkContainer to="/">
-			{gameID && isAuthenticated ? (
+			{(gameID || importedGameID) && isAuthenticated ? (
 			<>
 				<div className="font-weight-bold text-muted">
 				{gameID}
 				</div>
-				<Nav.Link className="copyButton" onClick={() => {navigator.clipboard.writeText(gameID)}}>
-          	 	Copy ID
-  				</Nav.Link>
+				<div className="font-weight-bold text-muted">
+				{importedGameID}
+				</div>
+				{(gameID ? (
+					<Nav.Link className="copyButton" onClick={() => {navigator.clipboard.writeText(gameID)}}>
+          	 		Copy ID
+  					</Nav.Link>
+  				) : (
+  					<Nav.Link className="copyButton" onClick={() => {navigator.clipboard.writeText(importedGameID)}}>
+  						Copy ID
+  					</Nav.Link>
+  					)
+  					)
+  				}
 				</>
 			) : (
           <Navbar.Brand className="font-weight-bold text-muted">
@@ -138,7 +150,7 @@ return (
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated, userEmail, setUserEmail }}>
+      <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated, userEmail, setUserEmail, importedGameID, setImportedGameID }}>
         <Routes />
       </AppContext.Provider>
     </div>

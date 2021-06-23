@@ -17,6 +17,7 @@ export default function JoinGame() {
          gameID: ""
        });
    const { setUserEmail } = useAppContext();
+   const { setImportedGameID } = useAppContext();
    const history = useHistory();
 
    async function handleSubmit(event) {
@@ -42,6 +43,7 @@ export default function JoinGame() {
                      	const response2 = await fetch('http://localhost:8080/api/v1/game/' + fields.gameID + '/join', requestOptions2)
                         	.then((response) => response.json())
                         	.then((responseData) => {
+										setImportedGameID(fields.gameID);
                            	history.push({
                            		pathname: "/play",
                               	state: { detail: fields.gameID }
