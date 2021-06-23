@@ -38,8 +38,8 @@ export default function JoinGame() {
 					.then((response) => response.text())
          		.then((responseData) => {
          			if (responseData == 'ONLINE') {
-							const request = async () => {
-                     	const response = await fetch('http://localhost:8080/api/v1/game/' + fields.gameID + '/join', requestOptions2)
+							const request2 = async () => {
+                     	const response2 = await fetch('http://localhost:8080/api/v1/game/' + fields.gameID + '/join', requestOptions2)
                         	.then((response) => response.json())
                         	.then((responseData) => {
                            	history.push({
@@ -49,7 +49,8 @@ export default function JoinGame() {
                            	return responseData;
                         	})
                            .catch(error => console.warn(error));
-         				}
+         				};
+         				request2();
          			} else {
          				alert("This game does not exist");
          				setIsLoading(false);
