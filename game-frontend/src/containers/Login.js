@@ -16,6 +16,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const { userHasAuthenticated } = useAppContext();
   const { setUserEmail } = useAppContext();
+  const { exportGameID } = useAppContext();
   const [fields, handleFieldChange] = useFormFields({
       email: "",
       password: ""

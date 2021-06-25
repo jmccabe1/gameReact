@@ -18,24 +18,25 @@ function Header() {
     const [userEmail, setUserEmail] = useState();
     const [gameID, setGameID] = useState(null);
     const [importedGameID, setImportedGameID] = useState();
-    useEffect(() => {
-      onLoad();
-    }, []);
+	const [exportGameID, setExportGameID] = useState();
+	useEffect(() => {
+            onLoad();
+          }, []);
 
 
-    async function onLoad() {
-      try {
-        await Auth.currentSession();
-        userHasAuthenticated(true);
-      }
-      catch(e) {
-        if (e !== 'No current user') {
-          onError(e);
-        }
-      }
+       async function onLoad() {
+         try {
+           await Auth.currentSession();
+           userHasAuthenticated(true);
+         }
+         catch(e) {
+           if (e !== 'No current user') {
+             onError(e);
+           }
+         }
 
-      setIsAuthenticating(false);
-    }
+         setIsAuthenticating(false);
+       }
 
     async function handleLogout() {
       await Auth.signOut();
@@ -66,10 +67,8 @@ function Header() {
        	  	 .then((response) => response.json())
       		  .then((responseData) => {
                     setGameID(responseData.gameID);
-							history.push({
-								pathname: "/play",
-								state: { detail: responseData.gameID }
-							})
+                    setExportGameID(responseData.gameID);
+							history.push("/play")
                     return responseData;
            	  })
             .catch(error => console.warn(error));
@@ -150,7 +149,7 @@ return (
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated, userEmail, setUserEmail, importedGameID, setImportedGameID }}>
+      <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated, userEmail, setUserEmail, importedGameID, setImportedGameID, exportGameID }}>
         <Routes />
       </AppContext.Provider>
     </div>

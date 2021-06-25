@@ -9,16 +9,17 @@ export default function PlayGame() {
 
 		const location = useLocation();
 		const { userEmail } = useAppContext();
+		const { exportGameID } = useAppContext();
 
 	return(
 	<>
 		<div className="Home">
                     <div className="lander">
                       <h1>Playing Game</h1>
-                      <AppContext.Provider value={ userEmail }>
-                      </AppContext.Provider>
+                      <AppContext.Provider value={ userEmail, exportGameID }>
                       <p className="text-muted">Playing as: {userEmail} </p>
-                      <p className="text-muted">ID: {location.state.detail}</p>
+                      <p className="text-muted">ID: {exportGameID}</p>
+                      </AppContext.Provider>
                     </div>
 
                </div>

@@ -18,11 +18,39 @@ import {
 } from "react-router-dom";
 
 function App() {
+	const [isAuthenticated, userHasAuthenticated] = useState(false);
+   const [isAuthenticating, setIsAuthenticating] = useState(true);
+   const [userEmail, setUserEmail] = useState();
+       const [gameID, setGameID] = useState(null);
+       const [importedGameID, setImportedGameID] = useState();
+   	const [exportGameID, setExportGameID] = useState();
+
+useEffect(() => {
+      onLoad();
+    }, []);
+
+    async function onLoad() {
+          try {
+            await Auth.currentSession();
+            userHasAuthenticated(true);
+          }
+          catch(e) {
+            if (e !== 'No current user') {
+              onError(e);
+            }
+          }
+
+          setIsAuthenticating(false);
+        }
 
 return (
   <div>
-  	<Header>
-  	</Header>
+
+  		<AppContext.Provider value={{ isAuthenticated, userHasAuthenticated, userEmail, setUserEmail, importedGameID, setImportedGameID, exportGameID }}>
+  			<Header>
+  			</Header>
+  		</AppContext.Provider>
+
   </div>
 );
 }
