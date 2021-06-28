@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import "./PlayGame.css";
 import { useAppContext } from "../libs/contextLib";
-import { useLocation } from "react-router-dom";
 import { AppContext } from "../libs/contextLib";
 
 export default function PlayGame() {
 
-		const location = useLocation();
 		const { userEmail } = useAppContext();
 		const { exportGameID } = useAppContext();
 

@@ -19,6 +19,7 @@ function Header() {
     const [gameID, setGameID] = useState(null);
     const [importedGameID, setImportedGameID] = useState();
 	const [exportGameID, setExportGameID] = useState();
+	const [exportUserEmail, setExportUserEmail] = useState();
 	useEffect(() => {
             onLoad();
           }, []);
@@ -88,6 +89,7 @@ function Header() {
           	history.push("/login");
        }
        else {
+       	setExportUserEmail(userEmail);
        	history.push({
        		pathname: "/join",
        		state: { detail: userEmail }
@@ -149,7 +151,7 @@ return (
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated, userEmail, setUserEmail, importedGameID, setImportedGameID, exportGameID }}>
+      <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated, userEmail, setUserEmail, importedGameID, setImportedGameID, exportGameID, exportUserEmail }}>
         <Routes />
       </AppContext.Provider>
     </div>

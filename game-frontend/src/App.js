@@ -24,6 +24,7 @@ function App() {
        const [gameID, setGameID] = useState(null);
        const [importedGameID, setImportedGameID] = useState();
    	const [exportGameID, setExportGameID] = useState();
+   	const [exportUserEmail, setExportUserEmail] = useState();
 
 useEffect(() => {
       onLoad();
@@ -46,7 +47,8 @@ useEffect(() => {
 return (
   <div>
 
-  		<AppContext.Provider value={{ isAuthenticated, userHasAuthenticated, userEmail, setUserEmail, importedGameID, setImportedGameID, exportGameID }}>
+  		<AppContext.Provider value={{ isAuthenticated, userHasAuthenticated, userEmail, setUserEmail, importedGameID,
+  		setImportedGameID, exportGameID, setExportGameID, exportUserEmail, setExportUserEmail }}>
   			<Header>
   			</Header>
   		</AppContext.Provider>

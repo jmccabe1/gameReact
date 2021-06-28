@@ -6,23 +6,23 @@ import { onError } from "../libs/errorLib";
 import { useFormFields } from "../libs/hooksLib";
 import { useAppContext } from "../libs/contextLib";
 import { useHistory } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { AppContext } from "../libs/contextLib";
 
 export default function JoinGame() {
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [gameStatus, setGameStatus] = useState(null);
-	const location = useLocation();
 	const [fields, handleFieldChange] = useFormFields({
          gameID: ""
        });
-   const { setUserEmail } = useAppContext();
+       const [userEmail, setUserEmail] = useState();
+   const { exportUserEmail } = useAppContext();
    const { setImportedGameID } = useAppContext();
    const history = useHistory();
 
    async function handleSubmit(event) {
        event.preventDefault();
-		setUserEmail(location.state.detail);
+		setUserEmail(exportUserEmail);
        setIsLoading(true);
 
        try {
@@ -44,10 +44,7 @@ export default function JoinGame() {
                         	.then((response) => response.json())
                         	.then((responseData) => {
 										setImportedGameID(fields.gameID);
-                           	history.push({
-                           		pathname: "/play",
-                              	state: { detail: fields.gameID }
-                           	})
+                           	history.push("/play")
                            	return responseData;
                         	})
                            .catch(error => console.warn(error));
@@ -74,7 +71,8 @@ export default function JoinGame() {
 
 	return(
 		<div className="Login">
-			Joining as: {location.state.detail}
+		<AppContext.Provider value={ exportUserEmail }>
+			Joining as: {exportUserEmail}
          <Form onSubmit={handleSubmit}>
            <Form.Group size="lg" controlId="gameID">
              <Form.Label>Game ID</Form.Label>
@@ -94,6 +92,7 @@ export default function JoinGame() {
                 Connect
               </LoaderButton>
             </Form>
+            </AppContext.Provider>
           </div>
 	);
 }
